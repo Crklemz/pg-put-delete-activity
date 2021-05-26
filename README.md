@@ -8,9 +8,9 @@ Get started by taking a look at our existing code, and getting the current appli
 
 ## Database Setup
 
-You'll need to create a database called `awesome_reads`. 
+[x]You'll need to create a database called `awesome_reads`. 
 
-Use the provided `database.sql` file to create the `books` table and setup some test data.
+[x]Use the provided `database.sql` file to create the `books` table and setup some test data.
 
 ## Base Mode
 

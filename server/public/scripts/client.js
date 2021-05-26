@@ -8,7 +8,27 @@ function addClickHandlers() {
   $('#submitBtn').on('click', handleSubmit);
 
   // TODO - Add code for edit & delete buttons
+ $('#bookShelf').on('click', '.isReadBtn', putEditStatusHandler);
 }
+
+function putEditStatusHandler() {
+  editBook($(this).data("id"), "false");
+}
+
+function editBook(bookId, status) {
+  $.ajax({
+    method: 'PUT',
+    url: `/books/${bookId}`,
+    data: {
+      status: status
+    }
+  }).then(response => {
+    console.log('dubbed a book as read');
+    refreshBooks();
+  }).catch(err => {
+    console.log('issue with editSong', err);
+  });
+}//end editBook
 
 function handleSubmit() {
   console.log('Submit button clicked.');
@@ -58,6 +78,9 @@ function renderBooks(books) {
       <tr>
         <td>${book.title}</td>
         <td>${book.author}</td>
+        <td>${book.isRead}</td>
+        <td><button class="isReadBtn" data-id="${books[i].id}">Mark as Read</button></td>
+        <td><button class="deleteBtn" data-id="${books[i].id}">Delete</button></td>
       </tr>
     `);
   }
