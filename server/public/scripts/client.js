@@ -9,12 +9,33 @@ function addClickHandlers() {
 
   // TODO - Add code for edit & delete buttons
  $('#bookShelf').on('click', '.isReadBtn', putEditStatusHandler);
+ $('#bookShelf').on('click', '.deleteBtn', deleteBookHandler);
 }
 
+//passing book id to deleteBook function
+function deleteBookHandler() {
+  deleteBook($(this).data("id"))
+}
+
+function deleteBook(bookId) {
+  $.ajax({
+    method: 'DELETE',
+    url: `/books/${bookId}`
+  }).then(response => {
+    console.log('deleted book');
+    refreshBooks();
+  }).catch(err => {
+    alert('there was a problem deleting that book. Please try again', err);
+  });
+}
+
+//function to pass the book id and the status from individual entries - required to update the database
 function putEditStatusHandler() {
   editBook($(this).data("id"), "false");
 }
 
+//function that works with putEditStatusHandler to send the info to 
+//the book.router.js file where the logic is happening
 function editBook(bookId, status) {
   $.ajax({
     method: 'PUT',

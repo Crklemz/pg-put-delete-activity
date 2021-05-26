@@ -38,15 +38,18 @@ router.post('/',  (req, res) => {
 // Updates a book to show that it has been read
 // Request must include a parameter indicating what book to update - the id
 // Request body must include the content to update - the status
-
 router.put('/:id', (req, res) => {
   const bookId = req.params.id;
 
+  //getting the status from the client
   let status = req.body.status;
 
+  //declaring queryString variable as an empty string
   let queryString = '';
 
+  //logic portion to change the isRead to true when the status of 'false' comes in from req.body.status
   if(status === 'false') {
+    //when false status passes through, queryString below will update the isRead status
     queryString = `UPDATE "books" SET "isRead"=true WHERE "books".id = $1`;
   } else {
     res.sendStatus(500);
@@ -68,6 +71,19 @@ router.put('/:id', (req, res) => {
 // TODO - DELETE 
 // Removes a book to show that it has been read
 // Request must include a parameter indicating what book to update - the id
+router.delete('/:id', (req, res) => {
+  const itemToDelete = req.params.id;
+  const queryString = `DELETE FROM "books" WHERE "books".id = $1`
+  pool.query(queryString, [itemToDelete])
+  .then((response) => {
+    console.log(`we deleted book with id ${itemToDelete}`);
+    res.send(200);
+  })
+  .catch((err) => {
+    console.log('something went wrong in router.delete', err);
+    res.sendStatus(500)
+  });
+});//end router.delete
 
 
 module.exports = router;
